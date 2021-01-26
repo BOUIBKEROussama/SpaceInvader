@@ -1,6 +1,7 @@
 package Controller;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -63,22 +64,25 @@ public boolean collisionLeft(Entity e) {
 	public void start() {
 		clock.schedule(new TimerTask() {
 			public void run() {
-				for(Monster m1 : minions) {
-					if(collisionRight(m1)){
+				Iterator<Minion> it = minions.iterator();
+				while(it.hasNext() ) {
+					Minion minion = it.next();
+					if(collisionDown(minion)) it.remove();
+					if(collisionRight(minion)){
 						direction = Direction.LEFT;
 						moveAllMinions(Direction.DOWN);
 						moveAllMinions(direction);
 						continue;
 					}	
-					if(collisionLeft(m1)) { 
+					if(collisionLeft(minion)) { 
 						direction = Direction.RIGHT;
 						moveAllMinions(Direction.DOWN);
 						moveAllMinions(direction);
 						continue;
 					}
-					if(direction == Direction.RIGHT) moveRight(m1);
-					if(direction ==  Direction.LEFT) moveLeft(m1);
-					System.out.println(m1.getX()+", "+m1.getY());
+					if(direction == Direction.RIGHT) moveRight(minion);
+					if(direction ==  Direction.LEFT) moveLeft(minion);
+					System.out.println(minion.getX()+", "+minion.getY());
 				}
 				System.out.println("------------------------------------");
 			}
