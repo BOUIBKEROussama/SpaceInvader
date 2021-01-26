@@ -5,13 +5,14 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import Model.*;
+import Tools.Direction;
 
 public class GlobalController {
 	
 	private Timer clock =new Timer(); 
 	private ArrayList<Missile> missiles  = new ArrayList<Missile>();
-	private ArrayList<Monster> monsters =new ArrayList<Monster>();
-	private String direction = "right";
+	private ArrayList<Minion> minions =new ArrayList<Minion>();
+	private Direction direction = Direction.RIGHT;
 	 public GlobalController(){}
 	
 	public void moveLeft(Entity e) {
@@ -31,49 +32,55 @@ public class GlobalController {
 	}
 	
 	// à complété avce la view
-	public boolean collision(Entity e) {
-		if(e.getY() <= 0 || e.getY()+e.getLongueur() >= 10 || e.getX() <= 0 || e.getX()+e.getLargeur() >= 10) {
+	public boolean collisionDown(Entity e) {
+		if(e.getY()+e.getLongueur() >= 10  ){
 			return true;
 		}
 		return false;
 	}
 	
-	public void addMonster(Monster m) {
-		monsters.add(m);
+	public boolean collisionRight(Entity e) {
+		if(e.getX()+e.getLargeur() >= 10) return true;
+		return false;
+	}
+	
+public boolean collisionLeft(Entity e) {
+		if(e.getX() <= 0) return true;
+		return false;
+	}
+	
+	public void addMinion(Minion m) {
+		minions.add(m);
+	}
+	
+	public void moveAllMinions(Direction d) {
+		if(d==Direction.LEFT) for(Minion m : minions) moveLeft(m);
+		if(d==Direction.RIGHT) for(Minion m : minions) moveRight(m);
+		if(d==Direction.DOWN) for(Minion m : minions) moveDown(m);
+		if(d==Direction.UP) for(Minion m : minions) moveUp(m);
 	}
 	
 	public void start() {
 		clock.schedule(new TimerTask() {
 			public void run() {
-				for(Monster m1 : monsters) {
-					if(collision(m1)){
-						if(direction == "right") { 
-							direction = "left";
-							for(Monster m2 : monsters) {
-								moveDown(m2);
-								moveLeft(m2);
-							}
-						}
-						else{							
-							if(direction == "left") { 
-								direction = "right";
-								for(Monster m2 : monsters) {
-									moveDown(m2);
-									moveRight(m2);
-								}
-							}
-						}
+				for(Monster m1 : minions) {
+					if(collisionRight(m1)){
+						direction = Direction.LEFT;
+						moveAllMinions(Direction.DOWN);
+						moveAllMinions(direction);
+						continue;
+					}	
+					if(collisionLeft(m1)) { 
+						direction = Direction.RIGHT;
+						moveAllMinions(Direction.DOWN);
+						moveAllMinions(direction);
+						continue;
 					}
-					else {
-						if(direction == "right") {
-							moveRight(m1);
-						}
-						if(direction == "left") {
-							moveLeft(m1);
-						}
-						System.out.println(m1.getX()+", "+m1.getY()+", "+direction);
-					}
+					if(direction == Direction.RIGHT) moveRight(m1);
+					if(direction ==  Direction.LEFT) moveLeft(m1);
+					System.out.println(m1.getX()+", "+m1.getY());
 				}
+				System.out.println("------------------------------------");
 			}
 			
 		}, 0, 100);
