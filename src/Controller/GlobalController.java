@@ -66,7 +66,10 @@ public boolean collisionLeft(Entity e) {
 	}
 	
 	public void moveAllMinions(Direction d) {
-		if(d==Direction.LEFT) for(Minion m : minions) moveLeft(m);
+		
+		if(d==Direction.LEFT) for(Minion m : minions) {
+			moveLeft(m);
+		}
 		if(d==Direction.RIGHT) for(Minion m : minions) moveRight(m);
 		if(d==Direction.DOWN) for(Minion m : minions) moveDown(m);
 		if(d==Direction.UP) for(Minion m : minions) moveUp(m);
@@ -99,27 +102,43 @@ public boolean collisionLeft(Entity e) {
 		clock.schedule(new TimerTask() {
 			public void run() {
 				updateSpaceshipPosition();
-				Iterator<Minion> it = minions.iterator();
-				while(it.hasNext() ) {
-					Minion minion = it.next();
-					if(collisionDown(minion)) it.remove();
-					if(collisionRight(minion)){
+				
+				/*if(collisionRight(minion)){
+					
+					Collections.reverse(minions);
+					
+					directionMinions = Direction.LEFT;
+					moveAllMinions(Direction.DOWN);
+					moveAllMinions(directionMinions);
+					continue;
+				}	
+				if(collisionLeft(minion)) {
+					Collections.reverse(minions);
+					directionMinions = Direction.RIGHT;
+					moveAllMinions(Direction.DOWN);
+					moveAllMinions(directionMinions);
+					continue;
+				}							
+					//System.out.println(minion.getX()+", "+minion.getY());
+				}*/
+				
+				for(Minion m : minions) {
+					if(collisionDown(m)) {
+						minions.removeAll(minions);
+					}
+					if(collisionRight(m)) {
 						directionMinions = Direction.LEFT;
 						moveAllMinions(Direction.DOWN);
-						moveAllMinions(directionMinions);
-						continue;
-					}	
-					if(collisionLeft(minion)) { 
+						break;
+					}
+					if(collisionLeft(m)) {
 						directionMinions = Direction.RIGHT;
 						moveAllMinions(Direction.DOWN);
-						moveAllMinions(directionMinions);
-						continue;
+						break;
 					}
-					if(directionMinions == Direction.RIGHT) moveRight(minion);
-					if(directionMinions ==  Direction.LEFT) moveLeft(minion);
-					System.out.println(minion.getX()+", "+minion.getY());
+					
 				}
-				
+				moveAllMinions(directionMinions);
 				
 				
 			}

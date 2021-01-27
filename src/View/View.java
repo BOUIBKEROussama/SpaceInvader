@@ -1,6 +1,7 @@
 package View;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 import Controller.GlobalController;
 import Model.Minion;
@@ -109,9 +110,18 @@ public class View extends Application {
 		spaceship = new Spaceship(width/2, height - 40, 30, 30, 3);
 		gc = new GlobalController();
 		gc.bindSpaceship(spaceship);
-		for(int i = 0; i < 1; i++) {
+		for(int i = 0; i < 4; i++) {
 			gc.addMinion(new Minion(100+(i*40), 100, 30, 30, 10));
 		}
+		for(Minion i:gc.getMinions()) {
+			System.out.print(i.getX()+" ");
+		}
+		System.out.println();
+		Collections.reverse(gc.getMinions());
+		for(Minion i:gc.getMinions()) {
+			System.out.print(i.getX()+" ");
+		}
+		
 		gc.start();
 		launch(args);
 		
