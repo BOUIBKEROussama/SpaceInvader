@@ -81,6 +81,10 @@ public boolean collisionLeft(Entity e) {
 		if(dir == Direction.RIGHT ) moveRight = true;
 	}
 	
+	public void addSpaceshipShot() {
+		missiles.add(spaceship.shotSpaceship());
+	}
+	
 	public void setSpaceshipOnRelease(Direction dir) {
 		if(dir == Direction.LEFT ) moveLeft = false;
 		if(dir == Direction.RIGHT ) moveRight = false;
@@ -121,5 +125,19 @@ public boolean collisionLeft(Entity e) {
 			}
 			
 		}, 0, 100);
+	}
+
+	public ArrayList<Missile> getMissiles() {
+		// TODO Auto-generated method stub
+		return missiles;
+	}
+	
+	public void updateMissilesPositions() {
+		for(Missile m : missiles) {
+			if(m.getDirection() == Direction.UP) {
+				moveUp(m);
+			}
+				
+		}
 	}
 }

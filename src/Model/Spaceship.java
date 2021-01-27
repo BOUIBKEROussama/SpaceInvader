@@ -2,6 +2,8 @@ package Model;
 
 import java.util.ArrayList;
 
+import Tools.Direction;
+
 public class Spaceship extends Entity{
 	
 	private int nbLife;
@@ -21,8 +23,8 @@ public class Spaceship extends Entity{
 	}	
 	
 	
-	public void shotSpaceship(ArrayList<Missile> m) {
-		m.add(new Missile(this.getY(),this.getX(),0,0));
+	public Missile shotSpaceship() {
+		return new Missile(this.getX(),this.getY(),Direction.UP);
 	}
 	
 }

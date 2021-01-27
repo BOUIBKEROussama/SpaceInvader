@@ -10,7 +10,6 @@ public class Entity {
 	
 	
 	public Entity(double x, double y, double longueur, double largeur) {
-		super();
 		X = x;
 		Y = y;
 		this.longueur = longueur;

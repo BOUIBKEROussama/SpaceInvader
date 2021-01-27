@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import Controller.GlobalController;
 import Model.Minion;
+import Model.Missile;
 import Model.Spaceship;
 import Tools.Direction;
 import javafx.animation.AnimationTimer;
@@ -45,12 +46,19 @@ public class View extends Application {
 		
 		Rectangle player =  new Rectangle(spaceship.getX(), spaceship.getY(), spaceship.getLongueur(), spaceship.getLargeur());
 		player.setFill(Color.AQUAMARINE);
+
 		root.getChildren().add(player);
 		for(Minion e : gc.getMinions()) {
 			Rectangle r = new Rectangle(e.getX(), e.getY(), e.getLongueur(), e.getLargeur());
 			root.getChildren().add(r);
 		}
-		
+		for(Missile m : gc.getMissiles()) {
+			Rectangle r2 = new Rectangle(m.getX(), m.getY(), 5,5);
+			System.out.println("--------------------------------------------------");
+			System.out.println(m.getX()+"   "+m.getY());
+			
+			root.getChildren().add(r2);
+		}
 		
 		
 		return root;
@@ -68,6 +76,8 @@ public class View extends Application {
 		        public void handle(KeyEvent event) {
 		          if (event.getCode()==KeyCode.LEFT) gc.setSpaceshipDirection(Direction.LEFT);
 		          if (event.getCode()==KeyCode.RIGHT) gc.setSpaceshipDirection(Direction.RIGHT);
+		          if (event.getCode()==KeyCode.SPACE) gc.addSpaceshipShot();
+
 		        }
 		    });
 		    scene.setOnKeyReleased(new EventHandler<KeyEvent>(){
@@ -78,6 +88,7 @@ public class View extends Application {
 		          event.consume();
 		        }
 		    });
+
 		timeline = new Timeline();
 		timeline.setCycleCount(Timeline.INDEFINITE);
 		timeline.setAutoReverse(true);

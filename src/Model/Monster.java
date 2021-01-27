@@ -2,6 +2,8 @@ package Model;
 
 import java.util.ArrayList;
 
+import Tools.Direction;
+
 public class Monster extends Entity{
 
 	private int healthPoint;
@@ -22,8 +24,8 @@ public class Monster extends Entity{
 	}
 	// A modifier pas sur peut etre liste 
 	
-	public void shotMonster(ArrayList<Missile> m) {
-		m.add(new Missile(this.getX(),this.getY(),0,0));
+	public Missile shotMonster() {
+		return new Missile(this.getX(),this.getY(),Direction.DOWN);
 	}
 	
 }
