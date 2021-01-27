@@ -20,7 +20,6 @@ public class Spaceship extends Entity{
 		this.nbLife = nbLife;
 	}	
 	
-	// A modifier pas sur peut etre liste 
 	
 	public void shotSpaceship(ArrayList<Missile> m) {
 		m.add(new Missile(this.getY(),this.getX(),0,0));
