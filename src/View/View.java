@@ -21,6 +21,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 import javafx.util.Duration;
 
 public class View extends Application {
@@ -88,6 +89,11 @@ public class View extends Application {
 		          event.consume();
 		        }
 		    });
+		    primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+		        @Override public void handle(WindowEvent event) {
+		          gc.stop();
+		        }
+		      });
 
 		timeline = new Timeline();
 		timeline.setCycleCount(Timeline.INDEFINITE);

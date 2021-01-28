@@ -13,7 +13,8 @@ import View.View;
 public class GlobalController {
 	
 	private Timer clock =new Timer(); 
-	private ArrayList<Missile> missiles  = new ArrayList<Missile>();
+	private ArrayList<Missile> spaceshipMissiles  = new ArrayList<Missile>();
+	private ArrayList<Missile> SpaceshipMissiles  = new ArrayList<Missile>();
 	private ArrayList<Minion> minions =new ArrayList<Minion>();
 	private Direction directionMinions = Direction.RIGHT;
 	private boolean moveLeft = false;
@@ -97,7 +98,7 @@ public class GlobalController {
 	}
 	
 	public void updateSpaceshipShoot() {
-		if(spaceshipIsShooting == true) missiles.add(spaceship.shotSpaceship());
+		if(spaceshipIsShooting == true) SpaceshipMissiles.add(spaceship.shotSpaceship());
 	}
 	
 	public void setSpaceshipOnRelease(Direction dir) {
@@ -160,11 +161,11 @@ public class GlobalController {
 	}
 
 	public ArrayList<Missile> getMissiles() {
-		return missiles;
+		return spaceshipMissiles;
 	}
 	
 	public void updateMissilesPositions() {
-		Iterator<Missile> it = missiles.iterator();
+		Iterator<Missile> it = spaceshipMissiles.iterator();
 		while(it.hasNext()) {
 			Missile m = it.next(); 
 			if(collisionUp(m) || collisionDown(m)) {
@@ -178,5 +179,10 @@ public class GlobalController {
 			}
 				
 		}
+	}
+
+	public void stop() {
+		// TODO Auto-generated method stub
+		clock.cancel();
 	}
 }
