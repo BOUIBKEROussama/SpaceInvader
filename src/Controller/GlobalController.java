@@ -14,7 +14,7 @@ public class GlobalController {
 	
 	private Timer clock =new Timer(); 
 	private ArrayList<Missile> spaceshipMissiles  = new ArrayList<Missile>();
-	private ArrayList<Missile> SpaceshipMissiles  = new ArrayList<Missile>();
+	private ArrayList<Missile> minionsMissiles  = new ArrayList<Missile>();
 	private ArrayList<Minion> minions =new ArrayList<Minion>();
 	private Direction directionMinions = Direction.RIGHT;
 	private boolean moveLeft = false;
@@ -98,7 +98,7 @@ public class GlobalController {
 	}
 	
 	public void updateSpaceshipShoot() {
-		if(spaceshipIsShooting == true) SpaceshipMissiles.add(spaceship.shotSpaceship());
+		if(spaceshipIsShooting == true) spaceshipMissiles.add(spaceship.shotSpaceship());
 	}
 	
 	public void setSpaceshipOnRelease(Direction dir) {
@@ -110,6 +110,27 @@ public class GlobalController {
 	    if(moveRight  && !collisionRight(spaceship)) moveRight(spaceship);
 	    if(moveLeft && !collisionLeft(spaceship)) moveLeft(spaceship);
 	  }
+	
+	public ArrayList<Missile> getMissiles() {
+		return spaceshipMissiles;
+	}
+	
+	public void updateMissilesPositions() {
+		Iterator<Missile> it = spaceshipMissiles.iterator();
+		while(it.hasNext()) {
+			Missile m = it.next(); 
+			if(collisionUp(m) || collisionDown(m)) {
+				it.remove();
+			}
+			if(m.getDirection() == Direction.UP) {
+				moveUp(m);
+			}
+			if(m.getDirection() == Direction.DOWN) {
+				moveDown(m);
+			}
+				
+		}
+	}
 	
 	public void start() {
 		clock.schedule(new TimerTask() {
@@ -158,27 +179,6 @@ public class GlobalController {
 			}
 			
 		}, 0, 100);
-	}
-
-	public ArrayList<Missile> getMissiles() {
-		return spaceshipMissiles;
-	}
-	
-	public void updateMissilesPositions() {
-		Iterator<Missile> it = spaceshipMissiles.iterator();
-		while(it.hasNext()) {
-			Missile m = it.next(); 
-			if(collisionUp(m) || collisionDown(m)) {
-				it.remove();
-			}
-			if(m.getDirection() == Direction.UP) {
-				moveUp(m);
-			}
-			if(m.getDirection() == Direction.DOWN) {
-				moveDown(m);
-			}
-				
-		}
 	}
 
 	public void stop() {
