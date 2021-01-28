@@ -1,6 +1,6 @@
 package Model;
 
-import java.util.ArrayList;
+import java.util.concurrent.TimeUnit;
 
 import Tools.Direction;
 
@@ -22,9 +22,8 @@ public class Spaceship extends Entity{
 		this.nbLife = nbLife;
 	}	
 	
-	
 	public Missile shotSpaceship() {
-		return new Missile(this.getX(),this.getY(),Direction.UP);
+		return new Missile(this.getX()+this.getLargeur()/2,this.getY(),Direction.UP);
 	}
 	
 }

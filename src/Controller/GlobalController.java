@@ -18,6 +18,7 @@ public class GlobalController {
 	private Direction directionMinions = Direction.RIGHT;
 	private boolean moveLeft = false;
 	private boolean moveRight = false;
+	private boolean spaceshipIsShooting = false;
 	private Spaceship spaceship;
 	
 	
@@ -45,9 +46,12 @@ public class GlobalController {
 	
 	// à complété avce la view
 	public boolean collisionDown(Entity e) {
-		if(e.getY()+e.getLongueur() >= View.height  ){
-			return true;
-		}
+		if(e.getY()+e.getLongueur() >= View.height  )return true;
+		return false;
+	}
+	
+	public boolean collisionUp(Entity e) {
+		if(e.getY() <= 0) return true;
 		return false;
 	}
 	
@@ -56,7 +60,7 @@ public class GlobalController {
 		return false;
 	}
 	
-public boolean collisionLeft(Entity e) {
+	public boolean collisionLeft(Entity e) {
 		if(e.getX() <= 0) return true;
 		return false;
 	}
@@ -84,8 +88,16 @@ public boolean collisionLeft(Entity e) {
 		if(dir == Direction.RIGHT ) moveRight = true;
 	}
 	
-	public void addSpaceshipShot() {
-		missiles.add(spaceship.shotSpaceship());
+	public void setSpaceshipShoot() {
+		spaceshipIsShooting = true;
+	}
+	
+	public void setSpaceshipShootOnRelease() {
+		spaceshipIsShooting = false;
+	}
+	
+	public void updateSpaceshipShoot() {
+		if(spaceshipIsShooting == true) missiles.add(spaceship.shotSpaceship());
 	}
 	
 	public void setSpaceshipOnRelease(Direction dir) {
@@ -102,7 +114,8 @@ public boolean collisionLeft(Entity e) {
 		clock.schedule(new TimerTask() {
 			public void run() {
 				updateSpaceshipPosition();
-				
+				updateSpaceshipShoot();
+				updateMissilesPositions();
 				/*if(collisionRight(minion)){
 					
 					Collections.reverse(minions);
@@ -147,14 +160,21 @@ public boolean collisionLeft(Entity e) {
 	}
 
 	public ArrayList<Missile> getMissiles() {
-		// TODO Auto-generated method stub
 		return missiles;
 	}
 	
 	public void updateMissilesPositions() {
-		for(Missile m : missiles) {
+		Iterator<Missile> it = missiles.iterator();
+		while(it.hasNext()) {
+			Missile m = it.next(); 
+			if(collisionUp(m) || collisionDown(m)) {
+				it.remove();
+			}
 			if(m.getDirection() == Direction.UP) {
 				moveUp(m);
+			}
+			if(m.getDirection() == Direction.DOWN) {
+				moveDown(m);
 			}
 				
 		}

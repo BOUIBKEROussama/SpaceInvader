@@ -53,11 +53,9 @@ public class View extends Application {
 			Rectangle r = new Rectangle(e.getX(), e.getY(), e.getLongueur(), e.getLargeur());
 			root.getChildren().add(r);
 		}
-		for(Missile m : gc.getMissiles()) {
-			Rectangle r2 = new Rectangle(m.getX(), m.getY(), 5,5);
-			System.out.println("--------------------------------------------------");
-			System.out.println(m.getX()+"   "+m.getY());
-			
+		for(Missile missile : gc.getMissiles()) {
+			Rectangle r2 = new Rectangle(missile.getX(), missile.getY(), missile.getLargeur(), missile.getLongueur());
+			r2.setFill(Color.BLUE);
 			root.getChildren().add(r2);
 		}
 		
@@ -77,7 +75,7 @@ public class View extends Application {
 		        public void handle(KeyEvent event) {
 		          if (event.getCode()==KeyCode.LEFT) gc.setSpaceshipDirection(Direction.LEFT);
 		          if (event.getCode()==KeyCode.RIGHT) gc.setSpaceshipDirection(Direction.RIGHT);
-		          if (event.getCode()==KeyCode.SPACE) gc.addSpaceshipShot();
+		          if (event.getCode()==KeyCode.SPACE) gc.setSpaceshipShoot();
 
 		        }
 		    });
@@ -86,6 +84,7 @@ public class View extends Application {
 		        public void handle(KeyEvent event) {
 		          if (event.getCode()==KeyCode.LEFT) gc.setSpaceshipOnRelease(Direction.LEFT);
 		          if (event.getCode()==KeyCode.RIGHT) gc.setSpaceshipOnRelease(Direction.RIGHT);
+		          if (event.getCode()==KeyCode.SPACE) gc.setSpaceshipShootOnRelease();
 		          event.consume();
 		        }
 		    });
@@ -112,14 +111,6 @@ public class View extends Application {
 		gc.bindSpaceship(spaceship);
 		for(int i = 0; i < 4; i++) {
 			gc.addMinion(new Minion(100+(i*40), 100, 30, 30, 10));
-		}
-		for(Minion i:gc.getMinions()) {
-			System.out.print(i.getX()+" ");
-		}
-		System.out.println();
-		Collections.reverse(gc.getMinions());
-		for(Minion i:gc.getMinions()) {
-			System.out.print(i.getX()+" ");
 		}
 		
 		gc.start();
