@@ -25,7 +25,7 @@ public class Monster extends Entity{
 	// A modifier pas sur peut etre liste 
 	
 	public Missile shotMonster() {
-		return new Missile(this.getX(),this.getY(),Direction.DOWN);
+		return new Missile(this.getX()+this.getLargeur()/2,this.getY()+this.getLongueur(),Direction.DOWN);
 	}
 	
 }

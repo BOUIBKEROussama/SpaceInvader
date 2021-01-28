@@ -111,24 +111,41 @@ public class GlobalController {
 	    if(moveLeft && !collisionLeft(spaceship)) moveLeft(spaceship);
 	  }
 	
-	public ArrayList<Missile> getMissiles() {
+	public ArrayList<Missile> getSpaceshipMissiles() {
 		return spaceshipMissiles;
 	}
 	
+	public ArrayList<Missile> getMinionsMissiles() {
+		return minionsMissiles;
+	}
+	
 	public void updateMissilesPositions() {
-		Iterator<Missile> it = spaceshipMissiles.iterator();
-		while(it.hasNext()) {
-			Missile m = it.next(); 
-			if(collisionUp(m) || collisionDown(m)) {
-				it.remove();
+		System.out.println(spaceshipMissiles.size());
+		Iterator<Missile> it1 = spaceshipMissiles.iterator();
+		while(it1.hasNext()) {
+			Missile m1 = it1.next(); 
+			if(collisionUp(m1)) {
+				it1.remove();
+				continue;
 			}
-			if(m.getDirection() == Direction.UP) {
-				moveUp(m);
+			moveUp(m1);
+		}
+		Iterator<Missile> it2 = minionsMissiles.iterator();
+		while(it2.hasNext()) {
+			Missile m2 = it2.next(); 
+			if(collisionDown(m2)) {
+				it2.remove();
+				continue;
 			}
-			if(m.getDirection() == Direction.DOWN) {
-				moveDown(m);
-			}
-				
+			moveDown(m2);
+		}
+	}
+	
+	public void randomMinionsShoot() {
+		int rand;
+		for (Minion m : minions) {
+			rand = (int) (Math.random()* 20);
+			if(rand == 1) minionsMissiles.add(m.shotMonster());
 		}
 	}
 	
@@ -137,29 +154,12 @@ public class GlobalController {
 			public void run() {
 				updateSpaceshipPosition();
 				updateSpaceshipShoot();
+				randomMinionsShoot();
 				updateMissilesPositions();
-				/*if(collisionRight(minion)){
-					
-					Collections.reverse(minions);
-					
-					directionMinions = Direction.LEFT;
-					moveAllMinions(Direction.DOWN);
-					moveAllMinions(directionMinions);
-					continue;
-				}	
-				if(collisionLeft(minion)) {
-					Collections.reverse(minions);
-					directionMinions = Direction.RIGHT;
-					moveAllMinions(Direction.DOWN);
-					moveAllMinions(directionMinions);
-					continue;
-				}							
-					//System.out.println(minion.getX()+", "+minion.getY());
-				}*/
-				
 				for(Minion m : minions) {
 					if(collisionDown(m)) {
 						minions.removeAll(minions);
+						break;
 					}
 					if(collisionRight(m)) {
 						directionMinions = Direction.LEFT;
@@ -171,7 +171,6 @@ public class GlobalController {
 						moveAllMinions(Direction.DOWN);
 						break;
 					}
-					
 				}
 				moveAllMinions(directionMinions);
 				

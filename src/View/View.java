@@ -54,10 +54,16 @@ public class View extends Application {
 			Rectangle r = new Rectangle(e.getX(), e.getY(), e.getLongueur(), e.getLargeur());
 			root.getChildren().add(r);
 		}
-		for(Missile missile : gc.getMissiles()) {
+		for(Missile missile : gc.getSpaceshipMissiles()) {
 			Rectangle r2 = new Rectangle(missile.getX(), missile.getY(), missile.getLargeur(), missile.getLongueur());
 			r2.setFill(Color.BLUE);
 			root.getChildren().add(r2);
+		}
+		
+		for(Missile missile : gc.getMinionsMissiles()) {
+			Rectangle r3 = new Rectangle(missile.getX(), missile.getY(), missile.getLargeur(), missile.getLongueur());
+			r3.setFill(Color.RED);
+			root.getChildren().add(r3);
 		}
 		
 		
